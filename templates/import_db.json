@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "serverName": {
-      "defaultValue": "ssteinsrv11291611",
+      "defaultValue": "ssteinsrv11291612",
       "type": "string"
     },
     "serverLocation": {
@@ -61,6 +61,7 @@
 		      "name": "Import",  
     "type": "Microsoft.Sql/servers/", 
 	"apiVersion": "2014-04-01-preview", 
+	          "location": "[parameters('serverlocation')]",
 	          "dependsOn": [
             "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
           ],
