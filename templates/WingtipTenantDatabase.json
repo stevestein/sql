@@ -1,0 +1,71 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "serverName": {
+	  "defaultValue": "ssteinimporttest",
+      "type": "string"
+    },
+    "serverLocation": {
+	  "defaultValue": "westus2",
+      "type": "string"
+    },
+    "administratorLogin": {
+	  "defaultValue": "sstein",
+      "type": "string"
+    },
+    "administratorLoginPassword": {
+	  "defaultValue": "azureDB123",
+      "type": "securestring"
+    },
+    "databaseName": {
+	  "defaultValue": "blankdb",
+      "type": "string"
+    },
+    "elasticPoolName": {
+	  "defaultValue": "ssteinimporttest",
+      "type": "string"
+    },
+    "storageUri": {
+	  "defaultValue": "http://sqldbbacpacs.blob.core.windows.net/bacpacs/AdventureWorksLT.bacpac",
+      "type": "string"
+    },
+    "storageKey": {
+	  "defaultValue": "8a/socfMldcfLe2AAPCqNniluY5IB2nQocIEwsvbGTCqSVOfSnL+gknYi7lYbh7VY9tTdZhUPkSqiHP2Tv7cFg==",
+      "type": "securestring"
+    },
+    "storageKeyType": {
+	  "defaultValue": "StorageAccessKey",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2014-04-01-preview",
+      "name": "[concat(parameters('serverName'), '/', parameters('databaseName'))]",
+      "location": "[parameters('serverLocation')]",
+      "type": "Microsoft.Sql/servers/databases",
+      "properties": {
+        "elasticPoolName": "[parameters('elasticPoolName')]"
+      },
+      "resources": [
+        {
+          "name": "Import",
+          "type": "extensions",
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/databases/', parameters('databaseName'))]"
+          ],
+          "properties": {
+            "storageKeyType": "[parameters('storageKeyType')]",
+            "storageKey": "[parameters('storageKey')]",
+            "storageUri": "[parameters('storageUri')]",
+            "administratorLogin": "[concat(parameters('administratorLogin'), '@', parameters('serverName'))]",
+            "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+            "operationMode": "Import"
+          }
+        }
+      ]
+    }
+  ]
+}
