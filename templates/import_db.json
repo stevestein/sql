@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "serverName": {
-      "defaultValue": "ssteinsrv11291601",
+      "defaultValue": "ssteinsrv11291608",
       "type": "string"
     },
     "serverLocation": {
@@ -59,7 +59,7 @@
 	  "resources": [
 		  {  
 		      "name": "Import",  
-    "type": "Microsoft.Sql/servers/[parameters('serverName')]", 
+    "type": "Import", 
 	"apiVersion": "2014-04-01-preview", 
     "properties": { 
 		"databaseName": "TestDb",   
