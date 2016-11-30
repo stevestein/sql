@@ -88,7 +88,9 @@
             "startIpAddress": "0.0.0.0",
             "endIpAddress": "255.255.255.255"
           }
-        },"resources":[
+        }
+      ],
+	  "resources":[
         {
             "name": "[variables('fullyQualifiedDbName')]",
             "type": "Microsoft.Sql/servers/databases",
@@ -108,7 +110,6 @@
             }
         }
     ],
-      ]
     }
   ],
   "outputs": {
