@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "serverName": {
-      "defaultValue": "ssteinsrv11291609",
+      "defaultValue": "ssteinsrv11291610",
       "type": "string"
     },
     "serverLocation": {
