@@ -59,7 +59,7 @@
 	  "resources": [
 		  {  
 		      "name": "Import",  
-    "type": "import", 
+    "type": "Microsoft.Sql/servers/import", 
 	"apiVersion": "2014-04-01-preview", 
 	          "dependsOn": [
             "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
