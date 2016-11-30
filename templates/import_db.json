@@ -58,6 +58,7 @@
       ],
 	  "resources": [
 		  {  
+		     "apiVersion": "2014-04-01-preview",
 		      "name": "Import",  
     "type": "Microsoft.Sql/servers/[parameters('serverName')]/import",  
     "properties": { 
