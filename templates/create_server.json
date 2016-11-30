@@ -15,7 +15,7 @@
       "type": "string"
     },
     "administratorLoginPassword": {
-      "defaultValue": "azureDB123",
+      "defaultValue": "AdminPa$$word",
       "type": "securestring"
     },
     "version": {
