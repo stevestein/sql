@@ -58,9 +58,9 @@
       ],
 	  "resources": [
 		  {  
-		     "apiVersion": "2014-04-01-preview",
 		      "name": "Import",  
-    "type": "Microsoft.Sql/servers/[parameters('serverName')]/import",  
+    "type": "Microsoft.Sql/servers/[parameters('serverName')]/import", 
+	"apiVersion": "2014-04-01-preview", 
     "properties": { 
 		"databaseName": "TestDb",   
 		"edition": "Basic",   
@@ -72,9 +72,8 @@
 		"administratorLogin": "sstein",   
 		"administratorLoginPassword": "AdminPa$$word",   
 		"authenticationType": "SQL",
-		"apiVersion": "2014-04-01-preview"
+		"operationMode": "import"
 		}
-   "apiVersion": "2014-04-01-preview"
 	}
 	  ]
     }
