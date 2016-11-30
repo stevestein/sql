@@ -1,0 +1,78 @@
+{
+  "$schema": "http: //schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "serverName": {
+      "defaultValue": "ssteinsrv11291601",
+      "type": "string"
+    },
+    "serverLocation": {
+      "defaultValue": "westus2",
+      "type": "string"
+    },
+    "administratorLogin": {
+      "defaultValue": "sstein",
+      "type": "string"
+    },
+    "administratorLoginPassword": {
+      "defaultValue": "AdminPa$$word",
+      "type": "securestring"
+    },
+    "version": {
+      "defaultValue": "12.0",
+      "type": "string"
+    },
+    "firewallRuleName": {
+      "defaultValue": "firewallRule1",
+      "type": "string"
+    }
+  },
+  "variables": {
+  },
+
+  "resources": [
+    {
+      "apiVersion": "2014-04-01-preview",
+      "name": "[parameters('serverName')]",
+      "location": "[parameters('serverLocation')]",
+      "type": "Microsoft.Sql/servers",
+      "properties": {
+        "administratorLogin": "[parameters('administratorLogin')]",
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+        "version": "[parameters('version')]"
+      },
+      "resources": [
+        {
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+          ],
+          "location": "[parameters('serverlocation')]",
+          "name": "[parameters('firewallRuleName')]",
+          "type": "firewallrules",
+          "properties": {
+            "startIpAddress": "0.0.0.0",
+            "endIpAddress": "255.255.255.255"
+          }
+        }
+      ]
+	  "resources": [
+	  {  
+    "databaseName": "TestDb",   
+    "edition": "Basic",   
+    "serviceObjectiveName": "Basic",   
+    "maxSizeBytes": "5000000",   
+    "storageKeyType": "StorageAccessKey",   
+    "storageKey": "8a/socfMldcfLe2AAPCqNniluY5IB2nQocIEwsvbGTCqSVOfSnL+gknYi7lYbh7VY9tTdZhUPkSqiHP2Tv7cFg==",       
+    "storageUri": "http://sqldbbacpacs.blob.core.windows.net/bacpacs/AdventureWorksLT.bacpac",   
+    "administratorLogin": "sstein",   
+    "administratorLoginPassword": "AdminPa$$word",   
+    "authenticationType": "SQL" 
+} 
+	  ]
+    }
+  ],
+
+  "outputs": {
+  }
+}
