@@ -59,7 +59,7 @@
 	  "resources": [
 		  {  
 		      "name": "Import",  
-    "type": "Microsoft.Sql/servers/[parameters('serverName')]/import", 
+    "type": "Microsoft.Sql/servers/[parameters('serverName')]", 
 	"apiVersion": "2014-04-01-preview", 
     "properties": { 
 		"databaseName": "TestDb",   
