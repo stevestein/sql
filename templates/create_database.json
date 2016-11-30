@@ -25,9 +25,44 @@
     "firewallRuleName": {
       "defaultValue": "firewallRule1",
       "type": "string"
-    }
-  },
+    },
+        "databaseName": {
+            "type": "string",
+            "minLength": 1
+        },
+        "databaseCollation": {
+            "type": "string",
+            "minLength": 1,
+            "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+        },
+        "databaseEdition": {
+            "type": "string",
+            "defaultValue": "Basic",
+            "allowedValues": [
+                "Basic",
+                "Standard",
+                "Premium"
+            ]
+        },
+        "databaseRequestedServiceObjectiveName": {
+            "type": "string",
+            "defaultValue": "Basic",
+            "allowedValues": [
+                "Basic",
+                "S0",
+                "S1",
+                "S2",
+                "P1",
+                "P2",
+                "P3"
+            ],
+            "metadata": {
+                "description": "Describes the performance level for Edition"
+            }
+        }
+    },
   "variables": {
+  "fullyQualifiedDbName": "[concat(variables('[parameters('serverName')]Name'), '/', parameters('databaseName'))]"
   },
 
   "resources": [
@@ -55,26 +90,25 @@
             "endIpAddress": "255.255.255.255"
           }
         },
-		      "resources": [
-	    {
-          "name": "[parameters('databaseName')]",
-          "type": "databases",
-          "apiVersion": "2014-04-01-preview",
-          "location": "[parameters('serverlocation')]",
-          "dependsOn":
-          [
-            "[concat('Microsoft.Sql/servers/', variables('serverName'))]"
-          ],
-          "properties":
-          {
-            "collation": "SQL_Latin1_General_CP1_CI_AS",
-            "edition": "Standard",
-            "maxSizeBytes": "5000000",
-            "requestedServiceObjectiveName": "S2"
-          }
-      ]
-    }
-  ],
+        {
+            "name": "[variables('fullyQualifiedDbName')]",
+            "type": "Microsoft.Sql/servers/databases",
+            "location": "[parameters('serverlocation')]",
+            "apiVersion": "2014-04-01-preview",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', variables('[parameters('serverName')]Name'))]"
+            ],
+            "tags": {
+                "displayName": "TestDB1"
+            },
+            "properties": {
+                "collation": "[parameters('databaseCollation')]",
+                "edition": "[parameters('databaseEdition')]",
+                "maxSizeBytes": "1073741824",
+                "requestedServiceObjectiveName": "[parameters('databaseRequestedServiceObjectiveName')]"
+            }
+        }
+    ],
 
   "outputs": {
   }
