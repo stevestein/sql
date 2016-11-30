@@ -60,11 +60,12 @@
           }
         }
       ],
-        {
+      "resources": [
+	    {
           "name": "[parameters('databaseName')]",
           "type": "databases",
           "apiVersion": "2014-04-01-preview",
-          "location": "[parameters('location')]",
+          "location": "[parameters('serverlocation')]",
           "dependsOn":
           [
             "[concat('Microsoft.Sql/servers/', variables('serverName'))]"
@@ -75,7 +76,7 @@
             "edition": "Standard",
             "maxSizeBytes": "5000000",
             "requestedServiceObjectiveName": "S2"
-          },
+          }],
 	  "resources": [
 		  {  
               "name": "Import",
