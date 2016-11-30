@@ -59,9 +59,8 @@
 	  "resources": [
 		  {  
 		      "name": "Import",  
-              "type": "Microsoft.Sql/servers/[parameters('serverName')]/import"  
+    "type": "Microsoft.Sql/servers/[parameters('serverName')]/import",  
     "properties": { 
-	    "apiVersion": "2014-04-01-preview",
 		"databaseName": "TestDb",   
 		"edition": "Basic",   
 		"serviceObjectiveName": "Basic",   
@@ -71,8 +70,9 @@
 		"storageUri": "http://sqldbbacpacs.blob.core.windows.net/bacpacs/AdventureWorksLT.bacpac",   
 		"administratorLogin": "sstein",   
 		"administratorLoginPassword": "AdminPa$$word",   
-		"authenticationType": "SQL"
-		}	
+		"authenticationType": "SQL",
+		"apiVersion": "2014-04-01-preview"
+		}
 	} 
 	  ]
     }
