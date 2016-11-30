@@ -61,6 +61,9 @@
 		      "name": "Import",  
     "type": "Import", 
 	"apiVersion": "2014-04-01-preview", 
+	          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+          ],
     "properties": { 
 		"databaseName": "TestDb",   
 		"edition": "Basic",   
