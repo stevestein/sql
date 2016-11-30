@@ -21,6 +21,10 @@
     "version": {
       "defaultValue": "12.0",
       "type": "string"
+    },    
+	"databaseName": {
+      "defaultValue": "TestDb",
+      "type": "string"
     },
     "firewallRuleName": {
       "defaultValue": "firewallRule1",
@@ -56,15 +60,31 @@
           }
         }
       ],
+        {
+          "name": "[parameters('databaseName')]",
+          "type": "databases",
+          "apiVersion": "2014-04-01-preview",
+          "location": "[parameters('location')]",
+          "dependsOn":
+          [
+            "[concat('Microsoft.Sql/servers/', variables('serverName'))]"
+          ],
+          "properties":
+          {
+            "collation": "SQL_Latin1_General_CP1_CI_AS",
+            "edition": "Standard",
+            "maxSizeBytes": "5000000",
+            "requestedServiceObjectiveName": "S2"
+          },
 	  "resources": [
 		  {  
-		      "name": "Import",  
-    "type": "Microsoft.Sql/servers/ssteinsrv11291616", 
-	"apiVersion": "2014-04-01-preview", 
-	          "location": "[parameters('serverlocation')]",
-	          "dependsOn": [
-            "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
-          ],
+              "name": "Import",
+              "type": "extensions",
+              "apiVersion": "2014-04-01-preview",
+              "dependsOn":
+              [
+                "[concat('Microsoft.Sql/servers/', variables('serverName'), '/databases/', parameters('databaseName'))]"
+              ],
     "properties": { 
 		"databaseName": "TestDb",   
 		"edition": "Basic",   
