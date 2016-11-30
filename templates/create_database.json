@@ -88,7 +88,26 @@
             "startIpAddress": "0.0.0.0",
             "endIpAddress": "255.255.255.255"
           }
+        },"resources":[
+        {
+            "name": "[variables('fullyQualifiedDbName')]",
+            "type": "Microsoft.Sql/servers/databases",
+            "location": "[parameters('serverlocation')]",
+            "apiVersion": "2014-04-01-preview",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', variables('[parameters('serverName')]Name'))]"
+            ],
+            "tags": {
+                "displayName": "TestDB1"
+            },
+            "properties": {
+                "collation": "[parameters('databaseCollation')]",
+                "edition": "[parameters('databaseEdition')]",
+                "maxSizeBytes": "1073741824",
+                "requestedServiceObjectiveName": "[parameters('databaseRequestedServiceObjectiveName')]"
+            }
         }
+    ],
       ]
     }
   ],
