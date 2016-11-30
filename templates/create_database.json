@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "serverName": {
-      "defaultValue": "ssteinsrv11291616",
+      "defaultValue": "ssteinsrv11301601",
       "type": "string"
     },
     "serverLocation": {
@@ -21,13 +21,13 @@
     "version": {
       "defaultValue": "12.0",
       "type": "string"
-    },    
-	"databaseName": {
-      "defaultValue": "TestDb",
-      "type": "string"
     },
     "firewallRuleName": {
       "defaultValue": "firewallRule1",
+      "type": "string"
+    },
+    "databaseName": {
+      "defaultValue": "database1130",
       "type": "string"
     }
   },
@@ -59,33 +59,27 @@
             "endIpAddress": "255.255.255.255"
           }
         }
-      ],
-	  "resources": [
-		  {  
-              "name": "Import",
-              "type": "extensions",
-              "apiVersion": "2014-04-01-preview",
-              "dependsOn":
-              [
-                "[concat('Microsoft.Sql/servers/', variables('serverName'), '/databases/', parameters('databaseName'))]"
-              ],
-    "properties": { 
-		"databaseName": "TestDb",   
-		"edition": "Basic",   
-		"serviceObjectiveName": "Basic",   
-		"maxSizeBytes": "5000000",   
-		"storageKeyType": "StorageAccessKey",   
-		"storageKey": "8a/socfMldcfLe2AAPCqNniluY5IB2nQocIEwsvbGTCqSVOfSnL+gknYi7lYbh7VY9tTdZhUPkSqiHP2Tv7cFg==",       
-		"storageUri": "http://sqldbbacpacs.blob.core.windows.net/bacpacs/AdventureWorksLT.bacpac",   
-		"administratorLogin": "sstein",   
-		"administratorLoginPassword": "AdminPa$$word",   
-		"authenticationType": "SQL",
-		"operationMode": "import"
-		}
-	}
-	  ]
-    }
+      ]
+    },
+	      "resources": [
+	    {
+          "name": "[parameters('databaseName')]",
+          "type": "databases",
+          "apiVersion": "2014-04-01-preview",
+          "location": "[parameters('serverlocation')]",
+          "dependsOn":
+          [
+            "[concat('Microsoft.Sql/servers/', variables('serverName'))]"
+          ],
+          "properties":
+          {
+            "collation": "SQL_Latin1_General_CP1_CI_AS",
+            "edition": "Standard",
+            "maxSizeBytes": "5000000",
+            "requestedServiceObjectiveName": "S2"
+          }
   ],
+
   "outputs": {
   }
 }
