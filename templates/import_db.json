@@ -57,18 +57,22 @@
         }
       ],
 	  "resources": [
-	  {  
-    "databaseName": "TestDb",   
-    "edition": "Basic",   
-    "serviceObjectiveName": "Basic",   
-    "maxSizeBytes": "5000000",   
-    "storageKeyType": "StorageAccessKey",   
-    "storageKey": "8a/socfMldcfLe2AAPCqNniluY5IB2nQocIEwsvbGTCqSVOfSnL+gknYi7lYbh7VY9tTdZhUPkSqiHP2Tv7cFg==",       
-    "storageUri": "http://sqldbbacpacs.blob.core.windows.net/bacpacs/AdventureWorksLT.bacpac",   
-    "administratorLogin": "sstein",   
-    "administratorLoginPassword": "AdminPa$$word",   
-    "authenticationType": "SQL" 
-} 
+		  {  
+		      "name": "Import",  
+    "type": "Microsoft.Sql/servers/[parameters('serverName')]/import",  
+    "properties": { 
+		"databaseName": "TestDb",   
+		"edition": "Basic",   
+		"serviceObjectiveName": "Basic",   
+		"maxSizeBytes": "5000000",   
+		"storageKeyType": "StorageAccessKey",   
+		"storageKey": "8a/socfMldcfLe2AAPCqNniluY5IB2nQocIEwsvbGTCqSVOfSnL+gknYi7lYbh7VY9tTdZhUPkSqiHP2Tv7cFg==",       
+		"storageUri": "http://sqldbbacpacs.blob.core.windows.net/bacpacs/AdventureWorksLT.bacpac",   
+		"administratorLogin": "sstein",   
+		"administratorLoginPassword": "AdminPa$$word",   
+		"authenticationType": "SQL" 
+		}
+	} 
 	  ]
     }
   ],
