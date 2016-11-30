@@ -54,7 +54,24 @@
             "startIpAddress": "0.0.0.0",
             "endIpAddress": "255.255.255.255"
           }
-        }
+        },
+		      "resources": [
+	    {
+          "name": "[parameters('databaseName')]",
+          "type": "databases",
+          "apiVersion": "2014-04-01-preview",
+          "location": "[parameters('serverlocation')]",
+          "dependsOn":
+          [
+            "[concat('Microsoft.Sql/servers/', variables('serverName'))]"
+          ],
+          "properties":
+          {
+            "collation": "SQL_Latin1_General_CP1_CI_AS",
+            "edition": "Standard",
+            "maxSizeBytes": "5000000",
+            "requestedServiceObjectiveName": "S2"
+          }
       ]
     }
   ],
