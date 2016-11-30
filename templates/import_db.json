@@ -55,7 +55,7 @@
             "endIpAddress": "255.255.255.255"
           }
         }
-      ]
+      ],
 	  "resources": [
 	  {  
     "databaseName": "TestDb",   
