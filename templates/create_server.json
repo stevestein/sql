@@ -22,13 +22,14 @@
       "defaultValue": "12.0",
       "type": "string"
     },
-    "firewallRule_name": {
-      "defaultValue": "ssteinsrv11291601/firewallRule1",
+    "firewallRuleName": {
+      "defaultValue": "firewallRule1",
       "type": "string"
     }
   },
   "variables": {
   },
+
   "resources": [
     {
       "apiVersion": "2014-04-01-preview",
@@ -39,11 +40,25 @@
         "administratorLogin": "[parameters('administratorLogin')]",
         "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
         "version": "[parameters('version')]"
-      }
-
+      },
+      "resources": [
+        {
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+          ],
+          "location": "[parameters('serverlocation')]",
+          "name": "[parameters('firewallRuleName')]",
+          "type": "firewallrules",
+          "properties": {
+            "endIpAddress": "0.0.0.0",
+            "startIpAddress": "255.255.255.255"
+          }
+        }
+      ]
     }
   ],
-      
-      "outputs": {
-      }
-    }
+
+  "outputs": {
+  }
+}
