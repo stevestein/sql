@@ -341,7 +341,7 @@
           "properties": {
             "databaseUserName": "developer",
             "databaseUserPassword": "P@ssword1",
-            "ServerSuffix": ".database.secure.windows.net",
+            "ServerSuffix": ".database.windows.net",
             "PrimaryDatabaseServer": "[variables('tenantserver')]",
             "SecondaryDatabaseServer": "[variables('tenantserver')]",
             "ShardDatabaseServer": "[variables('catalogServer')]",
@@ -447,7 +447,7 @@
           "properties": {
             "databaseUserName": "developer",
             "databaseUserPassword": "P@ssword1",
-            "ServerSuffix": ".database.secure.windows.net",
+            "ServerSuffix": ".database.windows.net",
             "PrimaryDatabaseServer": "[variables('tenantserver')]",
             "SecondaryDatabaseServer": "[variables('tenantserver')]",
             "ShardDatabaseServer": "[variables('catalogServer')]",
@@ -553,7 +553,7 @@
           "properties": {
             "databaseUserName": "developer",
             "databaseUserPassword": "P@ssword1",
-            "ServerSuffix": ".database.secure.windows.net",
+            "ServerSuffix": ".database.windows.net",
             "PrimaryDatabaseServer": "[variables('tenantserver')]",
             "SecondaryDatabaseServer": "[variables('tenantserver')]",
             "ShardDatabaseServer": "[variables('catalogServer')]",
@@ -658,7 +658,7 @@
           "properties": {
             "databaseUserName": "developer",
             "databaseUserPassword": "P@ssword1",
-            "ServerSuffix": ".database.secure.windows.net",
+            "ServerSuffix": ".database.windows.net",
             "PrimaryDatabaseServer": "[variables('tenantserver')]",
             "SecondaryDatabaseServer": "[variables('tenantserver')]",
             "ShardDatabaseServer": "[variables('catalogServer')]",
@@ -725,7 +725,7 @@
           "properties": {
             "databaseUserName": "developer",
             "databaseUserPassword": "P@ssword1",
-            "ServerSuffix": ".database.secure.windows.net",
+            "ServerSuffix": ".database.windows.net",
             "PrimaryDatabaseServer": "[variables('tenantserver')]",
             "SecondaryDatabaseServer": "[variables('tenantserver')]",
             "ShardDatabaseServer": "[variables('catalogServer')]",
