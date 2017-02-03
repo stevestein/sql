@@ -10,6 +10,7 @@
     }
   },
   "variables": {
+    "lowerCaseUser": "[toLower(parameters('user'))]",
     "location": "[resourceGroup().location]",
     "tenantservername": "customers1",
     "elasticPooledition": "Standard",
@@ -28,22 +29,22 @@
     "customerCatalogCollation": "SQL_Latin1_General_CP1_CI_AS",
     "customerCatalogEdition": "Standard",
     "webAppSku": "Standard",
-    "tenantserver": "[concat(variables('tenantservername'),'-', parameters('user'))]",
-    "databasestorageuri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-bacpacs/",
-    "catalogServer": "[concat(variables('catalogServerName'),'-', parameters('user'))]",
-    "wtpOperationstrafficManagerUniqueDnsName": "[concat('operations','.wtp','.',parameters('user'))]",
-    "wtpOperations": "[concat('operationswtp-',parameters('user'))]",
+    "tenantServer": "[concat(variables('tenantservername'),'-', variables('lowerCaseUser'))]",
+    "databaseStorageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-bacpacs/",
+    "catalogServer": "[concat(variables('catalogServerName'),'-', variables('lowerCaseUser'))]",
+    "wtpOperationstrafficManagerUniqueDnsName": "[concat('operations','.wtp','.',variables('lowerCaseUser'))]",
+    "wtpOperations": "[concat('operationswtp-',variables('lowerCaseUser'))]",
     "wtpOperationsPackageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-packages/wtpOperationsPackage.zip",
-    "wtpTenantAdmintrafficManagerUniqueDnsName": "[concat('admin.wtp.',parameters('user'))]",
-    "wtpTenantAdmin": "[concat('adminwtp-',parameters('user'))]",
+    "wtpTenantAdmintrafficManagerUniqueDnsName": "[concat('admin.wtp.',variables('lowerCaseUser'))]",
+    "wtpTenantAdmin": "[concat('adminwtp-',variables('lowerCaseUser'))]",
     "wtpTenantAdminPackageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-packages/wtpTenantAdminPackage.zip",
-    "wtpTenantRegistrationTrafficManagerUniqueDnsName": "[concat('register','.wtp.',parameters('user'))]",
-    "wtpTenantRegistrationApp": "[concat('registerwtp-',parameters('user'))]",
+    "wtpTenantRegistrationTrafficManagerUniqueDnsName": "[concat('register','.wtp.',variables('lowerCaseUser'))]",
+    "wtpTenantRegistrationApp": "[concat('registerwtp-',variables('lowerCaseUser'))]",
     "wtpTenantRegistrationAppPackageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-packages/wtpTenantRegistrationAppPackage.zip",
-    "wtpTenantUserTrafficManagerUniqueDnsName": "[concat('events.wtp.',parameters('user'))]",
-    "wtpTenantUser": "[concat('eventswtp-',parameters('user'))]",
+    "wtpTenantUserTrafficManagerUniqueDnsName": "[concat('events.wtp.',variables('lowerCaseUser'))]",
+    "wtpTenantUser": "[concat('eventswtp-',variables('lowerCaseUser'))]",
     "wtpTenantUserAppPackageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-packages/tenantUserAppPackage.zip",
-    "demoAssistant": "[concat('demowtp-', parameters('user'))]",
+    "demoAssistant": "[concat('demowtp-', variables('lowerCaseUser'))]",
     "demoAssistantAppPackageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-packages/demoAssistantAppPackage.zip"
   },
   "resources": [
@@ -325,7 +326,7 @@
             "TrafficManagerSuffix": "trafficmanager.net",
             "elasticPoolName": "Pool1",
             "ImageUrl": "https://wtpdeploystorageaccount.blob.core.windows.net/images/",
-            "User": "[parameters('user')]"
+            "User": "[variables('lowerCaseUser')]"
           }
         }
       ]
@@ -431,7 +432,7 @@
             "TrafficManagerSuffix": "trafficmanager.net",
             "elasticPoolName": "Pool1",
             "ImageUrl": "https://wtpdeploystorageaccount.blob.core.windows.net/images/",
-            "User": "[parameters('user')]"
+            "User": "[variables('lowerCaseUser')]"
           }
         }
       ]
@@ -537,7 +538,7 @@
             "TrafficManagerSuffix": "trafficmanager.net",
             "elasticPoolName": "Pool1",
             "ImageUrl": "https://wtpdeploystorageaccount.blob.core.windows.net/images/",
-            "User": "[parameters('user')]"
+            "User": "[variables('lowerCaseUser')]"
           }
         }
       ]
@@ -642,7 +643,7 @@
             "TrafficManagerSuffix": "trafficmanager.net",
             "elasticPoolName": "Pool1",
             "ImageUrl": "https://wtpdeploystorageaccount.blob.core.windows.net/images/",
-            "User": "[parameters('user')]"
+            "User": "[variables('lowerCaseUser')]"
           }
         }
       ]
@@ -709,7 +710,7 @@
             "TrafficManagerSuffix": "trafficmanager.net",
             "elasticPoolName": "Pool1",
             "ImageUrl": "https://wtpdeploystorageaccount.blob.core.windows.net/images/",
-            "User": "[parameters('user')]"
+            "User": "[variables('lowerCaseUser')]"
           }
         }
       ]
@@ -743,7 +744,7 @@
             ],
             "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
             "location": "global",
-            "name": "[parameters('user')]",
+            "name": "[variables('wtpTenantRegistrationApp')]",
             "apiVersion": "2015-11-01",
             "properties": {
               "targetResourceId": "[resourceId('Microsoft.Web/sites/',variables('wtpTenantRegistrationApp'))]",
@@ -755,7 +756,7 @@
     }
   ],
   "outputs": {
-    "DemoAssistantURL": {
+    "Demo_Assistant_URL": {
       "type": "string",
       "value": "[concat('http://', reference(resourceId('Microsoft.Web/sites', variables('demoAssistant'))).hostNames[0])]"
     }
