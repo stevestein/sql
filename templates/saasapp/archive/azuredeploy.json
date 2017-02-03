@@ -7,10 +7,36 @@
       "metadata": {
         "description": "User parameter will be used to create a unique Wingtip Platform Demo"
       }
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Location for deployment"
+      }
+    },
+    "storageKeyType": {
+      "type": "string",
+      "defaultValue":  "SharedAccessKey",
+      "metadata": {
+        "description": "Azure Storage Account Key Type"
+      }
+    },
+    "_artifactsLocation": {
+      "type": "securestring",
+      "defaultValue": "https://wtpdeploystorageaccount.blob.core.windows.net/",
+      "metadata": {
+        "description": "Azure Storage Account location"
+      }
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "defaultValue": "?",
+      "metadata": {
+        "description": "Azure Storage Account Shared Access Key Token"
+      }
     }
   },
   "variables": {
-    "location": "[resourceGroup().location]",
     "tenantservername": "customers1",
     "elasticPooledition": "Standard",
     "elasticPoolName": "Pool1",
@@ -28,28 +54,28 @@
     "customerCatalogCollation": "SQL_Latin1_General_CP1_CI_AS",
     "customerCatalogEdition": "Standard",
     "webAppSku": "Standard",
-    "tenantserver": "[concat(variables('tenantservername'),'-', parameters('user'))]",
-    "databasestorageuri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-bacpacs/",
-    "catalogServer": "[concat(variables('catalogServerName'),'-', parameters('user'))]",
+    "tenantserver": "[concat(variables('tenantservername'), parameters('user'))]",
+    "databasestorageuri": "[concat(parameters('_artifactsLocation'),'wingtip-bacpacs/')]",
+    "catalogServer": "[concat(variables('catalogServerName'), parameters('user'))]",
     "wtpOperationstrafficManagerUniqueDnsName": "[concat('operations','.wtp','.',parameters('user'))]",
-    "wtpOperations": "[concat('operationswtp-',parameters('user'))]",
-    "wtpOperationsPackageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-packages/wtpOperationsPackage.zip",
+    "wtpOperations": "[concat('operationswtp',parameters('user'))]",
+    "wtpOperationsPackageUri": "[concat(parameters('_artifactsLocation'),'wingtip-packages','/','wtpOperationsPackage.zip')]",
     "wtpTenantAdmintrafficManagerUniqueDnsName": "[concat('admin.wtp.',parameters('user'))]",
-    "wtpTenantAdmin": "[concat('adminwtp-',parameters('user'))]",
-    "wtpTenantAdminPackageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-packages/wtpTenantAdminPackage.zip",
+    "wtpTenantAdmin": "[concat('adminwtp',parameters('user'))]",
+    "wtpTenantAdminPackageUri": "[concat(parameters('_artifactsLocation'),'wingtip-packages','/','wtpTenantAdminPackage.zip')]",
     "wtpTenantRegistrationTrafficManagerUniqueDnsName": "[concat('register','.wtp.',parameters('user'))]",
-    "wtpTenantRegistrationApp": "[concat('registerwtp-',parameters('user'))]",
-    "wtpTenantRegistrationAppPackageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-packages/wtpTenantRegistrationAppPackage.zip",
+    "wtpTenantRegistrationApp": "[concat('registerwtp',parameters('user'))]",
+    "wtpTenantRegistrationAppPackageUri": "[concat(parameters('_artifactsLocation'),'wingtip-packages','/','wtpTenantRegistrationAppPackage.zip')]",
     "wtpTenantUserTrafficManagerUniqueDnsName": "[concat('events.wtp.',parameters('user'))]",
-    "wtpTenantUser": "[concat('eventswtp-',parameters('user'))]",
-    "wtpTenantUserAppPackageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-packages/tenantUserAppPackage.zip",
-    "demoAssistant": "[concat('demowtp-', parameters('user'))]",
-    "demoAssistantAppPackageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-packages/demoAssistantAppPackage.zip"
+    "wtpTenantUser": "[concat('eventswtp',parameters('user'))]",
+    "wtpTenantUserAppPackageUri": "[concat(parameters('_artifactsLocation'),'wingtip-packages','/','tenantUserAppPackage.zip')]",
+    "demoAssistant": "[concat('demowtp', parameters('user'))]",
+    "demoAssistantAppPackageUri": "[concat(parameters('_artifactsLocation'),'wingtip-packages','/','demoAssistantAppPackage.zip')]"
   },
   "resources": [
     {
       "name": "[variables('tenantserver')]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "type": "Microsoft.Sql/servers",
       "apiVersion": "2014-04-01-preview",
       "properties": {
@@ -89,7 +115,7 @@
         "[concat('Microsoft.Sql/servers/',variables('tenantserver'))]"
       ],
       "name": "[concat(variables('tenantserver'),'/',variables('elasticPoolName'))]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "type": "Microsoft.Sql/servers/elasticpools",
       "apiVersion": "2014-04-01-preview",
       "properties": {
@@ -105,7 +131,7 @@
         "[concat('Microsoft.Sql/servers/',variables('tenantserver'),'/elasticpools/',variables('elasticPoolName'))]"
       ],
       "name": "[concat(variables('tenantserver'),'/',variables('tenantcontosoconcerthall'))]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "type": "Microsoft.Sql/servers/databases",
       "apiVersion": "2014-04-01-preview",
       "properties": {
@@ -121,8 +147,8 @@
             "[concat('Microsoft.Sql/servers/',variables('tenantserver'),'/databases/',variables('tenantcontosoconcerthall'))]"
           ],
           "properties": {
-            "storageKeyType": "SharedAccessKey",
-            "storageKey": "?",
+            "storageKeyType": "[parameters('storageKeyType')]",
+            "storageKey": "[parameters('_artifactsLocationSasToken')]",
             "storageUri": "[concat(variables('databasestorageuri'),variables('tenantcontosoconcerthall'),'.bacpac')]",
             "administratorLogin": "[concat(variables('administratorLogin'),'@',variables('tenantserver'))]",
             "administratorLoginPassword": "[variables('administratorLoginPassword')]",
@@ -137,7 +163,7 @@
         "[concat('Microsoft.Sql/servers/',variables('tenantserver'),'/elasticpools/',variables('elasticPoolName'))]"
       ],
       "name": "[concat(variables('tenantserver'),'/',variables('tenantfabrikamjazzclub'))]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "type": "Microsoft.Sql/servers/databases",
       "apiVersion": "2014-04-01-preview",
       "properties": {
@@ -153,8 +179,8 @@
             "[concat('Microsoft.Sql/servers/',variables('tenantserver'),'/databases/',variables('tenantfabrikamjazzclub'))]"
           ],
           "properties": {
-            "storageKeyType": "SharedAccessKey",
-            "storageKey": "?",
+            "storageKeyType": "[parameters('storageKeyType')]",
+            "storageKey": "[parameters('_artifactsLocationSasToken')]",
             "storageUri": "[concat(variables('databasestorageuri'),variables('tenantfabrikamjazzclub'),'.bacpac')]",
             "administratorLogin": "[concat(variables('administratorLogin'),'@',variables('tenantserver'))]",
             "administratorLoginPassword": "[variables('administratorLoginPassword')]",
@@ -169,7 +195,7 @@
         "[concat('Microsoft.Sql/servers/',variables('tenantserver'),'/elasticpools/',variables('elasticPoolName'))]"
       ],
       "name": "[concat(variables('tenantserver'),'/',variables('tenantdogwooddojo'))]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "type": "Microsoft.Sql/servers/databases",
       "apiVersion": "2014-04-01-preview",
       "properties": {
@@ -185,8 +211,8 @@
             "[concat('Microsoft.Sql/servers/',variables('tenantserver'),'/databases/',variables('tenantdogwooddojo'))]"
           ],
           "properties": {
-            "storageKeyType": "SharedAccessKey",
-            "storageKey": "?",
+            "storageKeyType": "[parameters('storageKeyType')]",
+            "storageKey": "[parameters('_artifactsLocationSasToken')]",
             "storageUri": "[concat(variables('databasestorageuri'),variables('tenantdogwooddojo'),'.bacpac')]",
             "administratorLogin": "[concat(variables('administratorLogin'),'@',variables('tenantserver'))]",
             "administratorLoginPassword": "[variables('administratorLoginPassword')]",
@@ -197,7 +223,7 @@
     },
     {
       "name": "[variables('catalogServer')]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "type": "Microsoft.Sql/servers",
       "apiVersion": "2014-04-01-preview",
       "properties": {
@@ -237,7 +263,7 @@
         "[concat('Microsoft.Sql/servers/',variables('catalogServer'))]"
       ],
       "name": "[concat(variables('catalogServer'),'/',variables('catalogDatabaseName'))]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "type": "Microsoft.Sql/servers/databases",
       "apiVersion": "2014-04-01-preview",
       "properties": {
@@ -255,8 +281,8 @@
             "[concat('Microsoft.Sql/servers/',variables('catalogServer'),'/databases/',variables('catalogDatabaseName'))]"
           ],
           "properties": {
-            "storageKeyType": "SharedAccessKey",
-            "storageKey": "?",
+            "storageKeyType": "[parameters('storageKeyType')]",
+            "storageKey": "[parameters('_artifactsLocationSasToken')]",
             "storageUri": "[concat(variables('databasestorageuri'),'wingtipcatalogdb.bacpac' )]",
             "administratorLogin": "[concat(variables('administratorLogin'),'@',variables('catalogServer'))]",
             "administratorLoginPassword": "[variables('administratorLoginPassword')]",
@@ -268,7 +294,7 @@
     {
       "name": "[variables('wtpOperations')]",
       "apiVersion": "2014-06-01",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "type": "Microsoft.Web/serverfarms",
       "properties": {
         "name": "[variables('wtpOperations')]",
@@ -279,7 +305,7 @@
       "name": "[variables('wtpOperations')]",
       "apiVersion": "2015-08-01",
       "type": "Microsoft.Web/sites",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Web/serverfarms/',variables('wtpOperations'))]"
       ],
@@ -295,7 +321,7 @@
         {
           "name": "MSDeploy",
           "type": "extensions",
-          "location": "[variables('location')]",
+          "location": "[parameters('location')]",
           "apiVersion": "2015-08-01",
           "dependsOn": [
             "[concat('Microsoft.Web/sites/',variables('wtpOperations'))]"
@@ -372,7 +398,7 @@
     {
       "name": "[variables('wtpTenantUser')]",
       "apiVersion": "2014-06-01",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "type": "Microsoft.Web/serverfarms",
       "dependsOn": [
         "[concat('Microsoft.Web/serverfarms/',variables('wtpOperations'))]"
@@ -386,7 +412,7 @@
       "name": "[variables('wtpTenantUser')]",
       "apiVersion": "2015-08-01",
       "type": "Microsoft.Web/sites",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Web/serverfarms/',variables('wtpTenantUser'))]"
       ],
@@ -401,7 +427,7 @@
         {
           "name": "MSDeploy",
           "type": "extensions",
-          "location": "[variables('location')]",
+          "location": "[parameters('location')]",
           "apiVersion": "2015-08-01",
           "dependsOn": [
             "[concat('Microsoft.Web/sites/',variables('wtpTenantUser'))]"
@@ -478,7 +504,7 @@
     {
       "name": "[variables('wtpTenantAdmin')]",
       "apiVersion": "2014-06-01",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "type": "Microsoft.Web/serverfarms",
       "dependsOn": [
         "[concat('Microsoft.Web/serverfarms/',variables('wtpTenantUser'))]"
@@ -492,7 +518,7 @@
       "name": "[variables('wtpTenantAdmin')]",
       "apiVersion": "2015-08-01",
       "type": "Microsoft.Web/sites",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Web/serverfarms/',variables('wtpTenantAdmin'))]"
       ],
@@ -507,7 +533,7 @@
         {
           "name": "MSDeploy",
           "type": "extensions",
-          "location": "[variables('location')]",
+          "location": "[parameters('location')]",
           "apiVersion": "2015-08-01",
           "dependsOn": [
             "[concat('Microsoft.Web/sites/',variables('wtpTenantAdmin'))]"
@@ -584,7 +610,7 @@
     {
       "name": "[variables('demoAssistant')]",
       "type": "Microsoft.Web/serverfarms",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "apiVersion": "2014-06-01",
       "dependsOn": [
         "[concat('Microsoft.Web/serverfarms/',variables('wtpTenantAdmin'))]"
@@ -597,7 +623,7 @@
     {
       "name": "[variables('demoAssistant')]",
       "type": "Microsoft.Web/sites",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "apiVersion": "2015-08-01",
       "dependsOn": [
         "[concat('Microsoft.Web/serverfarms/',variables('demoAssistant'))]"
@@ -612,7 +638,7 @@
         {
           "name": "MSDeploy",
           "type": "extensions",
-          "location": "[variables('location')]",
+          "location": "[parameters('location')]",
           "apiVersion": "2015-08-01",
           "dependsOn": [
             "[concat('Microsoft.Web/sites/',variables('demoAssistant'))]"
@@ -650,7 +676,7 @@
     {
       "name": "[variables('wtpTenantRegistrationApp')]",
       "apiVersion": "2014-06-01",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "type": "Microsoft.Web/serverfarms",
       "dependsOn": [
         "[concat('Microsoft.Web/serverfarms/',variables('demoAssistant'))]"
@@ -664,7 +690,7 @@
       "name": "[variables('wtpTenantRegistrationApp')]",
       "apiVersion": "2015-08-01",
       "type": "Microsoft.Web/sites",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Web/serverfarms/',variables('wtpTenantRegistrationApp'))]"
       ],
@@ -679,7 +705,7 @@
         {
           "name": "MSDeploy",
           "type": "extensions",
-          "location": "[variables('location')]",
+          "location": "[parameters('location')]",
           "apiVersion": "2015-08-01",
           "dependsOn": [
             "[concat('Microsoft.Web/sites/',variables('wtpTenantRegistrationApp'))]"
@@ -753,11 +779,5 @@
         ]
       }
     }
-  ],
-  "outputs": {
-    "DemoAssistantURL": {
-      "type": "string",
-      "value": "[concat('http://', reference(resourceId('Microsoft.Web/sites', variables('demoAssistant'))).hostNames[0])]"
-    }
-  }
+  ]
 }

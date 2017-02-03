@@ -7,6 +7,15 @@
     },
     "location": {
       "value": "location"
+    },
+    "_artifactsLocation": {
+      "value": "https://wtpdeploystorageaccount.blob.core.windows.net/"
+    },
+    "_artifactsLocationSasToken": {
+      "value": "?"
+    },
+    "storageKeyType": {
+      "value": "SharedAccessKey"
     }
   }
 }
