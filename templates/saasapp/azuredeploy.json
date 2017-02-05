@@ -12,17 +12,17 @@
   "variables": {
     "lowerCaseUser": "[toLower(parameters('user'))]",
     "location": "[resourceGroup().location]",
-    "tenantservername": "customers1",
-    "elasticPooledition": "Standard",
+    "tenantServerName": "customers1",
+    "elasticPoolEdition": "Standard",
     "elasticPoolName": "Pool1",
     "poolDtu": "50",
     "databaseDtuMin": "0",
     "databaseDtuMax": "50",
     "administratorLogin": "developer",
     "administratorLoginPassword": "P@ssword1",
-    "tenantcontosoconcerthall": "contosoconcerthall",
-    "tenantfabrikamjazzclub": "fabrikamjazzclub",
-    "tenantdogwooddojo": "dogwooddojo",
+    "tenantContosoConcertHall": "contosoconcerthall",
+    "tenantFabrikamJazzClub": "fabrikamjazzclub",
+    "tenantDogwoodDojo": "dogwooddojo",
     "requestedServiceObjectiveName": "S0",
     "catalogServerName": "catalog",
     "catalogDatabaseName": "customercatalog",
@@ -32,7 +32,7 @@
     "tenantServer": "[concat(variables('tenantservername'),'-', variables('lowerCaseUser'))]",
     "databaseStorageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-bacpacs/",
     "catalogServer": "[concat(variables('catalogServerName'),'-', variables('lowerCaseUser'))]",
-    "wtpOperationstrafficManagerUniqueDnsName": "[concat('operations','.wtp','.',variables('lowerCaseUser'))]",
+    "wtpOperationsTrafficManagerUniqueDnsName": "[concat('operations','.wtp','.',variables('lowerCaseUser'))]",
     "wtpOperations": "[concat('operationswtp-',variables('lowerCaseUser'))]",
     "wtpOperationsPackageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-packages/wtpOperationsPackage.zip",
     "wtpTenantAdmintrafficManagerUniqueDnsName": "[concat('admin.wtp.',variables('lowerCaseUser'))]",
@@ -45,11 +45,12 @@
     "wtpTenantUser": "[concat('eventswtp-',variables('lowerCaseUser'))]",
     "wtpTenantUserAppPackageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-packages/tenantUserAppPackage.zip",
     "demoAssistant": "[concat('demowtp-', variables('lowerCaseUser'))]",
-    "demoAssistantAppPackageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-packages/demoAssistantAppPackage.zip"
+    "demoAssistantAppPackageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-packages/demoAssistantAppPackage.zip",
+    "demoAssistantTrafficManagerUniqueDnsName": "[concat('demo','.wtp','.',variables('lowerCaseUser'))]"
   },
   "resources": [
     {
-      "name": "[variables('tenantserver')]",
+      "name": "[variables('tenantServer')]",
       "location": "[variables('location')]",
       "type": "Microsoft.Sql/servers",
       "apiVersion": "2014-04-01-preview",
@@ -74,7 +75,7 @@
         {
           "apiVersion": "2014-04-01-preview",
           "dependsOn": [
-            "[concat('Microsoft.Sql/servers/',variables('tenantserver'))]"
+            "[concat('Microsoft.Sql/servers/',variables('tenantServer'))]"
           ],
           "name": "Open",
           "properties": {
@@ -87,14 +88,14 @@
     },
     {
       "dependsOn": [
-        "[concat('Microsoft.Sql/servers/',variables('tenantserver'))]"
+        "[concat('Microsoft.Sql/servers/',variables('tenantServer'))]"
       ],
-      "name": "[concat(variables('tenantserver'),'/',variables('elasticPoolName'))]",
+      "name": "[concat(variables('tenantServer'),'/',variables('elasticPoolName'))]",
       "location": "[variables('location')]",
       "type": "Microsoft.Sql/servers/elasticpools",
       "apiVersion": "2014-04-01-preview",
       "properties": {
-        "edition": "[variables('elasticPooledition')]",
+        "edition": "[variables('elasticPoolEdition')]",
         "dtu": "[variables('poolDtu')]",
         "databaseDtuMin": "[variables('databaseDtuMin')]",
         "databaseDtuMax": "[variables('databaseDtuMax')]"
@@ -102,10 +103,10 @@
     },
     {
       "dependsOn": [
-        "[concat('Microsoft.Sql/servers/',variables('tenantserver'))]",
-        "[concat('Microsoft.Sql/servers/',variables('tenantserver'),'/elasticpools/',variables('elasticPoolName'))]"
+        "[concat('Microsoft.Sql/servers/',variables('tenantServer'))]",
+        "[concat('Microsoft.Sql/servers/',variables('tenantServer'),'/elasticpools/',variables('elasticPoolName'))]"
       ],
-      "name": "[concat(variables('tenantserver'),'/',variables('tenantcontosoconcerthall'))]",
+      "name": "[concat(variables('tenantServer'),'/',variables('tenantContosoConcertHall'))]",
       "location": "[variables('location')]",
       "type": "Microsoft.Sql/servers/databases",
       "apiVersion": "2014-04-01-preview",
@@ -119,13 +120,13 @@
           "type": "extensions",
           "apiVersion": "2014-04-01-preview",
           "dependsOn": [
-            "[concat('Microsoft.Sql/servers/',variables('tenantserver'),'/databases/',variables('tenantcontosoconcerthall'))]"
+            "[concat('Microsoft.Sql/servers/',variables('tenantServer'),'/databases/',variables('tenantContosoConcertHall'))]"
           ],
           "properties": {
             "storageKeyType": "SharedAccessKey",
             "storageKey": "?",
-            "storageUri": "[concat(variables('databasestorageuri'),variables('tenantcontosoconcerthall'),'.bacpac')]",
-            "administratorLogin": "[concat(variables('administratorLogin'),'@',variables('tenantserver'))]",
+            "storageUri": "[concat(variables('databaseStorageUri'),variables('tenantContosoConcertHall'),'.bacpac')]",
+            "administratorLogin": "[concat(variables('administratorLogin'),'@',variables('tenantServer'))]",
             "administratorLoginPassword": "[variables('administratorLoginPassword')]",
             "operationMode": "Import"
           }
@@ -134,10 +135,10 @@
     },
     {
       "dependsOn": [
-        "[concat('Microsoft.Sql/servers/',variables('tenantserver'))]",
-        "[concat('Microsoft.Sql/servers/',variables('tenantserver'),'/elasticpools/',variables('elasticPoolName'))]"
+        "[concat('Microsoft.Sql/servers/',variables('tenantServer'))]",
+        "[concat('Microsoft.Sql/servers/',variables('tenantServer'),'/elasticpools/',variables('elasticPoolName'))]"
       ],
-      "name": "[concat(variables('tenantserver'),'/',variables('tenantfabrikamjazzclub'))]",
+      "name": "[concat(variables('tenantServer'),'/',variables('tenantFabrikamJazzClub'))]",
       "location": "[variables('location')]",
       "type": "Microsoft.Sql/servers/databases",
       "apiVersion": "2014-04-01-preview",
@@ -151,13 +152,13 @@
           "type": "extensions",
           "apiVersion": "2014-04-01-preview",
           "dependsOn": [
-            "[concat('Microsoft.Sql/servers/',variables('tenantserver'),'/databases/',variables('tenantfabrikamjazzclub'))]"
+            "[concat('Microsoft.Sql/servers/',variables('tenantServer'),'/databases/',variables('tenantFabrikamJazzClub'))]"
           ],
           "properties": {
             "storageKeyType": "SharedAccessKey",
             "storageKey": "?",
-            "storageUri": "[concat(variables('databasestorageuri'),variables('tenantfabrikamjazzclub'),'.bacpac')]",
-            "administratorLogin": "[concat(variables('administratorLogin'),'@',variables('tenantserver'))]",
+            "storageUri": "[concat(variables('databaseStorageUri'),variables('tenantFabrikamJazzClub'),'.bacpac')]",
+            "administratorLogin": "[concat(variables('administratorLogin'),'@',variables('tenantServer'))]",
             "administratorLoginPassword": "[variables('administratorLoginPassword')]",
             "operationMode": "Import"
           }
@@ -166,10 +167,10 @@
     },
     {
       "dependsOn": [
-        "[concat('Microsoft.Sql/servers/',variables('tenantserver'))]",
-        "[concat('Microsoft.Sql/servers/',variables('tenantserver'),'/elasticpools/',variables('elasticPoolName'))]"
+        "[concat('Microsoft.Sql/servers/',variables('tenantServer'))]",
+        "[concat('Microsoft.Sql/servers/',variables('tenantServer'),'/elasticpools/',variables('elasticPoolName'))]"
       ],
-      "name": "[concat(variables('tenantserver'),'/',variables('tenantdogwooddojo'))]",
+      "name": "[concat(variables('tenantServer'),'/',variables('tenantDogwoodDojo'))]",
       "location": "[variables('location')]",
       "type": "Microsoft.Sql/servers/databases",
       "apiVersion": "2014-04-01-preview",
@@ -183,13 +184,13 @@
           "type": "extensions",
           "apiVersion": "2014-04-01-preview",
           "dependsOn": [
-            "[concat('Microsoft.Sql/servers/',variables('tenantserver'),'/databases/',variables('tenantdogwooddojo'))]"
+            "[concat('Microsoft.Sql/servers/',variables('tenantServer'),'/databases/',variables('tenantDogwoodDojo'))]"
           ],
           "properties": {
             "storageKeyType": "SharedAccessKey",
             "storageKey": "?",
-            "storageUri": "[concat(variables('databasestorageuri'),variables('tenantdogwooddojo'),'.bacpac')]",
-            "administratorLogin": "[concat(variables('administratorLogin'),'@',variables('tenantserver'))]",
+            "storageUri": "[concat(variables('databaseStorageUri'),variables('tenantDogwoodDojo'),'.bacpac')]",
+            "administratorLogin": "[concat(variables('administratorLogin'),'@',variables('tenantServer'))]",
             "administratorLoginPassword": "[variables('administratorLoginPassword')]",
             "operationMode": "Import"
           }
@@ -258,7 +259,7 @@
           "properties": {
             "storageKeyType": "SharedAccessKey",
             "storageKey": "?",
-            "storageUri": "[concat(variables('databasestorageuri'),'wingtipcatalogdb.bacpac' )]",
+            "storageUri": "[concat(variables('databaseStorageUri'),'wingtipcatalogdb.bacpac' )]",
             "administratorLogin": "[concat(variables('administratorLogin'),'@',variables('catalogServer'))]",
             "administratorLoginPassword": "[variables('administratorLoginPassword')]",
             "operationMode": "Import"
@@ -317,8 +318,8 @@
             "databaseUserName": "developer",
             "databaseUserPassword": "P@ssword1",
             "ServerSuffix": ".database.windows.net",
-            "PrimaryDatabaseServer": "[variables('tenantserver')]",
-            "SecondaryDatabaseServer": "[variables('tenantserver')]",
+            "PrimaryDatabaseServer": "[variables('tenantServer')]",
+            "SecondaryDatabaseServer": "[variables('tenantServer')]",
             "ShardDatabaseServer": "[variables('catalogServer')]",
             "CustomerCatalogServer": "[variables('catalogServer')]",
             "CustomerCatalogDatabase": "[variables('catalogDatabaseName')]",
@@ -326,7 +327,8 @@
             "TrafficManagerSuffix": "trafficmanager.net",
             "elasticPoolName": "Pool1",
             "ImageUrl": "https://wtpdeploystorageaccount.blob.core.windows.net/images/",
-            "User": "[variables('lowerCaseUser')]"
+            "User": "[variables('lowerCaseUser')]",
+            "LearnHowFooterUrl": "https://docs.microsoft.com/azure/sql-database/sql-database-saas-tutorial/"
           }
         }
       ]
@@ -423,8 +425,8 @@
             "databaseUserName": "developer",
             "databaseUserPassword": "P@ssword1",
             "ServerSuffix": ".database.windows.net",
-            "PrimaryDatabaseServer": "[variables('tenantserver')]",
-            "SecondaryDatabaseServer": "[variables('tenantserver')]",
+            "PrimaryDatabaseServer": "[variables('tenantServer')]",
+            "SecondaryDatabaseServer": "[variables('tenantServer')]",
             "ShardDatabaseServer": "[variables('catalogServer')]",
             "CustomerCatalogServer": "[variables('catalogServer')]",
             "CustomerCatalogDatabase": "[variables('catalogDatabaseName')]",
@@ -432,7 +434,8 @@
             "TrafficManagerSuffix": "trafficmanager.net",
             "elasticPoolName": "Pool1",
             "ImageUrl": "https://wtpdeploystorageaccount.blob.core.windows.net/images/",
-            "User": "[variables('lowerCaseUser')]"
+            "User": "[variables('lowerCaseUser')]",
+            "LearnHowFooterUrl": "https://docs.microsoft.com/azure/sql-database/sql-database-saas-tutorial/"
           }
         }
       ]
@@ -529,8 +532,8 @@
             "databaseUserName": "developer",
             "databaseUserPassword": "P@ssword1",
             "ServerSuffix": ".database.windows.net",
-            "PrimaryDatabaseServer": "[variables('tenantserver')]",
-            "SecondaryDatabaseServer": "[variables('tenantserver')]",
+            "PrimaryDatabaseServer": "[variables('tenantServer')]",
+            "SecondaryDatabaseServer": "[variables('tenantServer')]",
             "ShardDatabaseServer": "[variables('catalogServer')]",
             "CustomerCatalogServer": "[variables('catalogServer')]",
             "CustomerCatalogDatabase": "[variables('catalogDatabaseName')]",
@@ -538,7 +541,8 @@
             "TrafficManagerSuffix": "trafficmanager.net",
             "elasticPoolName": "Pool1",
             "ImageUrl": "https://wtpdeploystorageaccount.blob.core.windows.net/images/",
-            "User": "[variables('lowerCaseUser')]"
+            "User": "[variables('lowerCaseUser')]",
+            "LearnHowFooterUrl": "https://docs.microsoft.com/azure/sql-database/sql-database-saas-tutorial/"
           }
         }
       ]
@@ -634,8 +638,8 @@
             "databaseUserName": "developer",
             "databaseUserPassword": "P@ssword1",
             "ServerSuffix": ".database.windows.net",
-            "PrimaryDatabaseServer": "[variables('tenantserver')]",
-            "SecondaryDatabaseServer": "[variables('tenantserver')]",
+            "PrimaryDatabaseServer": "[variables('tenantServer')]",
+            "SecondaryDatabaseServer": "[variables('tenantServer')]",
             "ShardDatabaseServer": "[variables('catalogServer')]",
             "CustomerCatalogServer": "[variables('catalogServer')]",
             "CustomerCatalogDatabase": "[variables('catalogDatabaseName')]",
@@ -643,10 +647,50 @@
             "TrafficManagerSuffix": "trafficmanager.net",
             "elasticPoolName": "Pool1",
             "ImageUrl": "https://wtpdeploystorageaccount.blob.core.windows.net/images/",
-            "User": "[variables('lowerCaseUser')]"
+            "User": "[variables('lowerCaseUser')]",
+            "LearnHowFooterUrl": "https://docs.microsoft.com/azure/sql-database/sql-database-saas-tutorial/"
           }
         }
       ]
+    },
+    {
+      "apiVersion": "2015-11-01",
+      "type": "Microsoft.Network/trafficManagerProfiles",
+      "name": "[variables('demoAssistant')]",
+      "location": "global",
+      "dependsOn": [
+        "[concat('Microsoft.Web/serverfarms/',variables('demoAssistant'))]",
+        "[concat('Microsoft.Web/sites/',variables('demoAssistant'))]"
+      ],
+      "properties": {
+        "profileStatus": "Enabled",
+        "trafficRoutingMethod": "Priority",
+        "dnsConfig": {
+          "relativeName": "[variables('demoAssistantTrafficManagerUniqueDnsName')]",
+          "ttl": 30
+        },
+        "monitorConfig": {
+          "protocol": "HTTP",
+          "port": 80,
+          "path": "/"
+        },
+        "endpoints": [
+          {
+            "dependsOn": [
+              "[resourceId('Microsoft.Network/trafficManagerProfiles/',variables('demoAssistant'))]",
+              "[concat('Microsoft.Web/sites/',variables('demoAssistant'))]"
+            ],
+            "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
+            "location": "global",
+            "name": "[variables('demoAssistant')]",
+            "apiVersion": "2015-11-01",
+            "properties": {
+              "targetResourceId": "[resourceId('Microsoft.Web/sites/',variables('demoAssistant'))]",
+              "endpointStatus": "Enabled"
+            }
+          }
+        ]
+      }
     },
     {
       "name": "[variables('wtpTenantRegistrationApp')]",
@@ -701,8 +745,8 @@
             "databaseUserName": "developer",
             "databaseUserPassword": "P@ssword1",
             "ServerSuffix": ".database.windows.net",
-            "PrimaryDatabaseServer": "[variables('tenantserver')]",
-            "SecondaryDatabaseServer": "[variables('tenantserver')]",
+            "PrimaryDatabaseServer": "[variables('tenantServer')]",
+            "SecondaryDatabaseServer": "[variables('tenantServer')]",
             "ShardDatabaseServer": "[variables('catalogServer')]",
             "CustomerCatalogServer": "[variables('catalogServer')]",
             "CustomerCatalogDatabase": "[variables('catalogDatabaseName')]",
@@ -710,7 +754,8 @@
             "TrafficManagerSuffix": "trafficmanager.net",
             "elasticPoolName": "Pool1",
             "ImageUrl": "https://wtpdeploystorageaccount.blob.core.windows.net/images/",
-            "User": "[variables('lowerCaseUser')]"
+            "User": "[variables('lowerCaseUser')]",
+            "LearnHowFooterUrl": "https://docs.microsoft.com/azure/sql-database/sql-database-saas-tutorial/"
           }
         }
       ]
@@ -758,7 +803,7 @@
   "outputs": {
     "Demo_Assistant_URL": {
       "type": "string",
-      "value": "[concat('http://', reference(resourceId('Microsoft.Web/sites', variables('demoAssistant'))).hostNames[0])]"
+      "value": "[concat('http://', reference(resourceId('Microsoft.Network/trafficManagerProfiles', variables('demoAssistant'))).dnsconfig.fqdn)]"
     }
   }
 }
