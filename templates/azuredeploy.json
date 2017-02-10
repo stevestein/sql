@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "serverName": {
-      "defaultValue": "ssteinsrv11291601",
+      "defaultValue": "ssteinsrv02101705",
       "type": "string"
     },
     "serverLocation": {
@@ -15,7 +15,7 @@
       "type": "string"
     },
     "administratorLoginPassword": {
-      "defaultValue": "AdminPa$$word",
+      "defaultValue": "azureDB123",
       "type": "securestring"
     },
     "version": {
@@ -26,10 +26,11 @@
       "defaultValue": "firewallRule1",
       "type": "string"
     },
-        "databaseName": {
-            "type": "string",
-            "minLength": 1
-        },
+    "databaseName": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "testdb0210"
+    },
         "databaseCollation": {
             "type": "string",
             "minLength": 1,
