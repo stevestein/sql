@@ -63,7 +63,7 @@
         }
     },
   "variables": {
-  "fullyQualifiedDbName": "[concat(variables('[parameters('serverName')]Name'), '/', parameters('databaseName'))]"
+  "fullyQualifiedDbName": "[concat('[parameters('serverName')], '/', parameters('databaseName'))]"
   },
    "resources": [
     {
