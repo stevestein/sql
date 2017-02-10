@@ -1,0 +1,117 @@
+{
+  "$schema": "http: //schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "serverName": {
+      "defaultValue": "ssteinsrv11291601",
+      "type": "string"
+    },
+    "serverLocation": {
+      "defaultValue": "westus2",
+      "type": "string"
+    },
+    "administratorLogin": {
+      "defaultValue": "sstein",
+      "type": "string"
+    },
+    "administratorLoginPassword": {
+      "defaultValue": "AdminPa$$word",
+      "type": "securestring"
+    },
+    "version": {
+      "defaultValue": "12.0",
+      "type": "string"
+    },
+    "firewallRuleName": {
+      "defaultValue": "firewallRule1",
+      "type": "string"
+    },
+        "databaseName": {
+            "type": "string",
+            "minLength": 1
+        },
+        "databaseCollation": {
+            "type": "string",
+            "minLength": 1,
+            "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+        },
+        "databaseEdition": {
+            "type": "string",
+            "defaultValue": "Basic",
+            "allowedValues": [
+                "Basic",
+                "Standard",
+                "Premium"
+            ]
+        },
+        "databaseRequestedServiceObjectiveName": {
+            "type": "string",
+            "defaultValue": "Basic",
+            "allowedValues": [
+                "Basic",
+                "S0",
+                "S1",
+                "S2",
+                "P1",
+                "P2",
+                "P3"
+            ],
+            "metadata": {
+                "description": "Describes the performance level for Edition"
+            }
+        }
+    },
+  "variables": {
+  "fullyQualifiedDbName": "[concat(variables('[parameters('serverName')]Name'), '/', parameters('databaseName'))]"
+  },
+   "resources": [
+    {
+      "apiVersion": "2014-04-01-preview",
+      "name": "[parameters('serverName')]",
+      "location": "[parameters('serverLocation')]",
+      "type": "Microsoft.Sql/servers",
+      "properties": {
+        "administratorLogin": "[parameters('administratorLogin')]",
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+        "version": "[parameters('version')]"
+      },
+      "resources": [
+        {
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+          ],
+          "location": "[parameters('serverlocation')]",
+          "name": "[parameters('firewallRuleName')]",
+          "type": "firewallrules",
+          "properties": {
+            "startIpAddress": "0.0.0.0",
+            "endIpAddress": "255.255.255.255"
+          }
+        }
+      ],
+	  "resources":[
+        {
+            "name": "[variables('fullyQualifiedDbName')]",
+            "type": "Microsoft.Sql/servers/databases",
+            "location": "[parameters('serverlocation')]",
+            "apiVersion": "2014-04-01-preview",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', variables('[parameters('serverName')]Name'))]"
+            ],
+            "tags": {
+                "displayName": "TestDB1"
+            },
+            "properties": {
+                "collation": "[parameters('databaseCollation')]",
+                "edition": "[parameters('databaseEdition')]",
+                "maxSizeBytes": "1073741824",
+                "requestedServiceObjectiveName": "[parameters('databaseRequestedServiceObjectiveName')]"
+            }
+        }
+    ],
+    }
+  ],
+  "outputs": {
+  }
+}
