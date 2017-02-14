@@ -106,7 +106,7 @@
             "location": "[parameters('serverlocation')]",
             "apiVersion": "2014-04-01-preview",
           "dependsOn": [
-            "[resourceId('Microsoft.Sql/servers', variables('[parameters('serverName')]Name'))]"
+            "[resourceId('Microsoft.Sql/servers/', variables('[parameters('serverName')]Name'))]"
           ],
             "tags": {
                 "displayName": "TestDB1"
