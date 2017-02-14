@@ -25,6 +25,14 @@
     "firewallRuleName": {
       "defaultValue": "firewallRule1",
       "type": "string"
+    },
+    "firewallStartIp": {
+      "defaultValue": "0.0.0.0",
+      "type": "string"
+    },
+    "firewallEndIp": {
+      "defaultValue": "255.255.255.255",
+      "type": "string"
     }
   },
   "variables": {
@@ -51,8 +59,8 @@
           "name": "[parameters('firewallRuleName')]",
           "type": "firewallrules",
           "properties": {
-            "startIpAddress": "0.0.0.0",
-            "endIpAddress": "255.255.255.255"
+            "startIpAddress": "[parameters('firewallStartIp')]",
+            "endIpAddress": "[parameters('firewallEndIp')]"
           }
         }
       ]
