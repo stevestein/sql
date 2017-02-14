@@ -15,7 +15,7 @@
       "type": "string"
     },
     "administratorLoginPassword": {
-      "defaultValue": "AdminPa$$word",
+      "defaultValue": "azureDB123",
       "type": "securestring"
     },
     "version": {
@@ -26,43 +26,52 @@
       "defaultValue": "firewallRule1",
       "type": "string"
     },
-        "databaseName": {
-            "type": "string",
-            "minLength": 1
-        },
-        "databaseCollation": {
-            "type": "string",
-            "minLength": 1,
-            "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
-        },
-        "databaseEdition": {
-            "type": "string",
-            "defaultValue": "Basic",
-            "allowedValues": [
-                "Basic",
-                "Standard",
-                "Premium"
-            ]
-        },
-        "databaseRequestedServiceObjectiveName": {
-            "type": "string",
-            "defaultValue": "Basic",
-            "allowedValues": [
-                "Basic",
-                "S0",
-                "S1",
-                "S2",
-                "P1",
-                "P2",
-                "P3"
-            ],
-            "metadata": {
-                "description": "Describes the performance level for Edition"
-            }
-        }
+    "firewallStartIp": {
+      "defaultValue": "0.0.0.0",
+      "type": "string"
     },
+    "firewallEndIp": {
+      "defaultValue": "255.255.255.255",
+      "type": "string"
+    },
+    "databaseName": {
+      "defaultValue": "database42",
+      "type": "string",
+      "minLength": 1
+    },
+    "databaseCollation": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "databaseEdition": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "Standard",
+        "Premium"
+      ]
+    },
+    "databaseRequestedServiceObjectiveName": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "S0",
+        "S1",
+        "S2",
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "metadata": {
+        "description": "Describes the performance level for Edition"
+      }
+    }
+  },
   "variables": {
-  "fullyQualifiedDbName": "[concat(variables('[parameters('serverName')]Name'), '/', parameters('databaseName'))]"
+    "fullyQualifiedDbName": "[concat(parameters('serverName'), '/', parameters('databaseName'))]"
   },
    "resources": [
     {
