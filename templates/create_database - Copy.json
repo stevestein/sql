@@ -1,0 +1,126 @@
+{
+  "$schema": "http: //schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "serverName": {
+      "defaultValue": "ssteinsrv02151705",
+      "type": "string"
+    },
+    "serverLocation": {
+      "defaultValue": "westus",
+      "type": "string"
+    },
+    "administratorLogin": {
+      "defaultValue": "sstein",
+      "type": "string"
+    },
+    "administratorLoginPassword": {
+      "defaultValue": "azureDB123",
+      "type": "securestring"
+    },
+    "version": {
+      "defaultValue": "12.0",
+      "type": "string"
+    },
+    "firewallRuleName": {
+      "defaultValue": "firewallRule1",
+      "type": "string"
+    },
+    "firewallStartIp": {
+      "defaultValue": "0.0.0.0",
+      "type": "string"
+    },
+    "firewallEndIp": {
+      "defaultValue": "255.255.255.255",
+      "type": "string"
+    },
+    "databaseName": {
+      "defaultValue": "database2",
+      "type": "string",
+      "minLength": 1
+    },
+    "databaseCollation": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "databaseEdition": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "Standard",
+        "Premium"
+      ]
+    },
+    "databaseRequestedServiceObjectiveName": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "metadata": {
+        "description": "Describes the performance level for Edition"
+      }
+    }
+  },
+  "variables": {
+    "fullyQualifiedDbName": "[concat(parameters('serverName'), '/', parameters('databaseName'))]",
+    "databaseStorageUri": "https://sqldbbacpacs.blob.core.windows.net/bacpacs/AdventureWorksLT.bacpac"
+  },
+   "resources": [
+    {
+      "apiVersion": "2014-04-01-preview",
+      "name": "[parameters('serverName')]",
+      "location": "[parameters('serverLocation')]",
+      "type": "Microsoft.Sql/servers",
+      "properties": {
+        "administratorLogin": "[parameters('administratorLogin')]",
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+        "version": "[parameters('version')]"
+      },
+      "resources": [
+        {
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+          ],
+          "location": "[parameters('serverlocation')]",
+          "name": "[parameters('firewallRuleName')]",
+          "type": "firewallrules",
+          "properties": {
+            "startIpAddress": "0.0.0.0",
+            "endIpAddress": "255.255.255.255"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "name": "Import",
+          "type": "extensions",
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+          ],
+          "properties": {
+            "storageKeyType": "SharedAccessKey",
+            "storageKey": "?",
+            "storageUri": "variables('databaseStorageUri')",
+            "administratorLogin": "[parameters('administratorLogin')]",
+            "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+            "operationMode": "Import"
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": {
+  }
+}

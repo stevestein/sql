@@ -67,7 +67,7 @@
               "apiVersion": "2014-04-01-preview",
               "dependsOn":
               [
-                "[concat('Microsoft.Sql/servers/', variables('serverName'), '/databases/', parameters('databaseName'))]"
+                "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/databases/', parameters('databaseName'))]"
               ],
     "properties": { 
 		"databaseName": "TestDb",   
@@ -78,7 +78,7 @@
 		"storageKey": "8a/socfMldcfLe2AAPCqNniluY5IB2nQocIEwsvbGTCqSVOfSnL+gknYi7lYbh7VY9tTdZhUPkSqiHP2Tv7cFg==",       
 		"storageUri": "http://sqldbbacpacs.blob.core.windows.net/bacpacs/AdventureWorksLT.bacpac",   
 		"administratorLogin": "sstein",   
-		"administratorLoginPassword": "AdminPa$$word",   
+		"administratorLoginPassword": "azureDB123",   
 		"authenticationType": "SQL",
 		"operationMode": "import"
 		}
