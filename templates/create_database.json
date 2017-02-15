@@ -85,21 +85,33 @@
         "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
         "version": "[parameters('version')]"
       },
-      "resources": [
+       "resources": [
         {
           "apiVersion": "2014-04-01-preview",
           "dependsOn": [
-            "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+            "[concat('Microsoft.Sql/servers/',variables('tenantserver'))]"
           ],
-          "location": "[parameters('serverlocation')]",
-          "name": "[parameters('firewallRuleName')]",
-          "type": "firewallrules",
+          "name": "AllowAllAzureIps",
+          "properties": {
+            "startIpAddress": "0.0.0.0",
+            "endIpAddress": "0.0.0.0"
+          },
+          "type": "firewallrules"
+        },
+        {
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/',variables('tenantServer'))]"
+          ],
+          "name": "Open",
           "properties": {
             "startIpAddress": "0.0.0.0",
             "endIpAddress": "255.255.255.255"
-          }
+          },
+          "type": "firewallrules"
         }
-      ],
+      ]
+    },
       "resources": [
         {
           "name": "Import",
