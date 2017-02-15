@@ -106,7 +106,7 @@
           "type": "extensions",
           "apiVersion": "2014-04-01-preview",
           "dependsOn": [
-            "[concat('Microsoft.Sql/servers/', parameters('serverName'),'/databases/',parameters('databaseName'))]"
+            "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
           ],
           "properties": {
             "storageKeyType": "SharedAccessKey",
