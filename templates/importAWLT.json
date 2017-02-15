@@ -2,23 +2,23 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "sstein0215171446AdminLogin": {
+        "adminLogin": {
             "type": "string",
             "minLength": 1
         },
-        "sstein0215171446AdminLoginPassword": {
+        "adminLoginPassword": {
             "type": "securestring"
         },
-        "awliteName": {
+        "dbName": {
             "type": "string",
             "minLength": 1
         },
-        "awliteCollation": {
+        "dbCollation": {
             "type": "string",
             "minLength": 1,
             "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
         },
-        "awliteEdition": {
+        "dbEdition": {
             "type": "string",
             "defaultValue": "Basic",
             "allowedValues": [
@@ -27,7 +27,7 @@
                 "Premium"
             ]
         },
-        "awliteRequestedServiceObjectiveName": {
+        "dbRequestedServiceObjectiveName": {
             "type": "string",
             "defaultValue": "Basic",
             "allowedValues": [
@@ -63,21 +63,21 @@
         }
     },
     "variables": {
-        "sstein0215171446Name": "[concat('sstein0215171446', uniqueString(resourceGroup().id))]"
+        "serverName": "[concat('sstein0215171606', uniqueString(resourceGroup().id))]"
     },
     "resources": [
         {
-            "name": "[variables('sstein0215171446Name')]",
+            "name": "[variables('serverName')]",
             "type": "Microsoft.Sql/servers",
             "location": "[resourceGroup().location]",
             "apiVersion": "2014-04-01-preview",
             "dependsOn": [ ],
-            "tags": {
-                "displayName": "sstein0215171446"
-            },
+          "tags": {
+            "displayName": "[variables('serverName')]"
+          },
             "properties": {
-                "administratorLogin": "[parameters('sstein0215171446AdminLogin')]",
-                "administratorLoginPassword": "[parameters('sstein0215171446AdminLoginPassword')]"
+                "administratorLogin": "[parameters('adminLogin')]",
+                "administratorLoginPassword": "[parameters('adminLoginPassword')]"
             },
             "resources": [
                 {
@@ -86,7 +86,7 @@
                     "location": "[resourceGroup().location]",
                     "apiVersion": "2014-04-01-preview",
                     "dependsOn": [
-                        "[concat('Microsoft.Sql/servers/', variables('sstein0215171446Name'))]"
+                        "[concat('Microsoft.Sql/servers/', variables('serverName'))]"
                     ],
                     "properties": {
                         "startIpAddress": "0.0.0.0",
@@ -94,21 +94,21 @@
                     }
                 },
                 {
-                    "name": "[parameters('awliteName')]",
+                    "name": "[parameters('dbName')]",
                     "type": "databases",
                     "location": "[resourceGroup().location]",
                     "apiVersion": "2014-04-01-preview",
                     "dependsOn": [
-                        "[variables('sstein0215171446Name')]"
+                        "[variables('serverName')]"
                     ],
                     "tags": {
                         "displayName": "awlite"
                     },
                     "properties": {
-                        "collation": "[parameters('awliteCollation')]",
-                        "edition": "[parameters('awliteEdition')]",
+                        "collation": "[parameters('dbCollation')]",
+                        "edition": "[parameters('dbEdition')]",
                         "maxSizeBytes": "1073741824",
-                        "requestedServiceObjectiveName": "[parameters('awliteRequestedServiceObjectiveName')]"
+                        "requestedServiceObjectiveName": "[parameters('dbRequestedServiceObjectiveName')]"
                     },
                     "resources": [
                         {
@@ -116,7 +116,7 @@
                             "type": "extensions",
                             "apiVersion": "2014-04-01-preview",
                             "dependsOn": [
-                                "[parameters('awliteName')]"
+                                "[parameters('dbName')]"
                             ],
                             "tags": {
                                 "displayName": "sqlDbImport"
@@ -125,8 +125,8 @@
                                 "storageKeyType": "[parameters('sqlDbImportStorageKeyType')]",
                                 "storageKey": "[parameters('sqlDbImportStorageKey')]",
                                 "storageUri": "[parameters('sqlDbImportStorageUri')]",
-                                "administratorLogin": "[parameters('sqlDbImportAdministratorLogin')]",
-                                "administratorLoginPassword": "[parameters('sqlDbImportAdministratorLoginPassword')]",
+                                "administratorLogin": "[parameters('adminLogin')]",
+                                "administratorLoginPassword": "[parameters('adminLoginPassword')]",
                                 "operationMode": "Import"
                             }
                         }
