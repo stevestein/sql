@@ -66,21 +66,22 @@
               "type": "extensions",
               "apiVersion": "2014-04-01-preview",
         "dependsOn": [
-          "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+          "[concat('Microsoft.Sql/servers/', parameters('serverName'))]",
+          "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/databases/', parameters('databaseName'))]"
         ],
-    "properties": { 
-		"databaseName": "TestDb",   
-		"edition": "Basic",   
-		"serviceObjectiveName": "Basic",   
-		"maxSizeBytes": "5000000",   
-		"storageKeyType": "StorageAccessKey",   
-		"storageKey": "8a/socfMldcfLe2AAPCqNniluY5IB2nQocIEwsvbGTCqSVOfSnL+gknYi7lYbh7VY9tTdZhUPkSqiHP2Tv7cFg==",       
-		"storageUri": "http://sqldbbacpacs.blob.core.windows.net/bacpacs/AdventureWorksLT.bacpac",   
-		"administratorLogin": "sstein",   
-		"administratorLoginPassword": "azureDB123",   
-		"authenticationType": "SQL",
-		"operationMode": "import"
-		}
+        "properties": {
+          "databaseName": "TestDb",
+          "edition": "Standard",
+          "serviceObjectiveName": "S0",
+          "maxSizeBytes": "2147483648",
+          "storageKeyType": "StorageAccessKey",
+          "storageKey": "8a/socfMldcfLe2AAPCqNniluY5IB2nQocIEwsvbGTCqSVOfSnL+gknYi7lYbh7VY9tTdZhUPkSqiHP2Tv7cFg==",
+          "storageUri": "http://sqldbbacpacs.blob.core.windows.net/bacpacs/AdventureWorksLT.bacpac",
+          "administratorLogin": "sstein",
+          "administratorLoginPassword": "azureDB123",
+          "authenticationType": "SQL",
+          "operationMode": "Import"
+        }
 	}
 	  ]
     }
