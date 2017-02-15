@@ -3,11 +3,11 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "serverName": {
-      "defaultValue": "sstein02141704",
+      "defaultValue": "ssteinsrv02151705",
       "type": "string"
     },
     "serverLocation": {
-      "defaultValue": "westus2",
+      "defaultValue": "westus",
       "type": "string"
     },
     "administratorLogin": {
@@ -35,7 +35,7 @@
       "type": "string"
     },
     "databaseName": {
-      "defaultValue": "database42",
+      "defaultValue": "database2",
       "type": "string",
       "minLength": 1
     },
@@ -61,6 +61,7 @@
         "S0",
         "S1",
         "S2",
+        "S3",
         "P1",
         "P2",
         "P3"
