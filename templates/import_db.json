@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "serverName": {
-      "defaultValue": "ssteinsrv11291616",
+      "defaultValue": "ssteinsrv0215171348",
       "type": "string"
     },
     "serverLocation": {
@@ -15,7 +15,7 @@
       "type": "string"
     },
     "administratorLoginPassword": {
-      "defaultValue": "AdminPa$$word",
+      "defaultValue": "azureDB123",
       "type": "securestring"
     },
     "version": {
