@@ -71,7 +71,8 @@
     }
   },
   "variables": {
-    "fullyQualifiedDbName": "[concat(parameters('serverName'), '/', parameters('databaseName'))]"
+    "fullyQualifiedDbName": "[concat(parameters('serverName'), '/', parameters('databaseName'))]",
+    "databaseStorageUri": "https://sqldbbacpacs.blob.core.windows.net/bacpacs/AdventureWorksLT.bacpac"
   },
    "resources": [
     {
@@ -99,26 +100,24 @@
           }
         }
       ],
-	  "resources":[
+      "resources": [
         {
-            "name": "[variables('fullyQualifiedDbName')]",
-            "type": "Microsoft.Sql/servers/databases",
-            "location": "[parameters('serverlocation')]",
-            "apiVersion": "2014-04-01-preview",
+          "name": "Import",
+          "type": "extensions",
+          "apiVersion": "2014-04-01-preview",
           "dependsOn": [
-            "[resourceId('Microsoft.Sql/servers/', variables('[parameters('serverName')]Name'))]"
+            "[concat('Microsoft.Sql/servers/',variables('serverName'),'/databases/',variables('databaseName'))]"
           ],
-            "tags": {
-                "displayName": "TestDB1"
-            },
-            "properties": {
-                "collation": "[parameters('databaseCollation')]",
-                "edition": "[parameters('databaseEdition')]",
-                "maxSizeBytes": "1073741824",
-                "requestedServiceObjectiveName": "[parameters('databaseRequestedServiceObjectiveName')]"
-            }
+          "properties": {
+            "storageKeyType": "SharedAccessKey",
+            "storageKey": "?",
+            "storageUri": "variables('databaseStorageUri')",
+            "administratorLogin": "variables('administratorLogin')",
+            "administratorLoginPassword": "variables('administratorLoginPassword'",
+            "operationMode": "Import"
+          }
         }
-    ],
+      ]
     }
   ],
   "outputs": {
