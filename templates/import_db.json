@@ -1,88 +1,144 @@
 {
-  "$schema": "http: //schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "adminLogin": {
+      "type": "string",
+      "minLength": 1,
+      "metadata": {
+        "description": "The admin login for the SQL server."
+      }
+    },
+    "adminLoginPassword": {
+      "type": "securestring",
+      "minLength": 1,
+      "metadata": {
+        "description": "The admin password for the SQL server"
+      }
+    },
+    "dbName": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "AdventureWorksLT",
+      "metadata": {
+        "description": "The name of the database."
+      }
+    },
     "serverName": {
-      "defaultValue": "ssteinsrv0215171348",
-      "type": "string"
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "ssteinsrv021171645",
+      "metadata": {
+        "description": "The name of the server."
+      }
     },
-    "serverLocation": {
-      "defaultValue": "westus2",
-      "type": "string"
+    "dbEdition": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "Standard",
+        "Premium"
+      ],
+      "metadata": {
+        "description": "The service tier for the imported database."
+      }
     },
-    "administratorLogin": {
-      "defaultValue": "sstein",
-      "type": "string"
+    "dbRequestedServiceObjectiveName": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "S0",
+        "S1",
+        "S2",
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "metadata": {
+        "description": "The performance level for the selected Edition"
+      }
     },
-    "administratorLoginPassword": {
-      "defaultValue": "azureDB123",
+    "sqlDbImportAdministratorLoginPassword": {
       "type": "securestring"
-    },
-    "version": {
-      "defaultValue": "12.0",
-      "type": "string"
-    },    
-	"databaseName": {
-      "defaultValue": "TestDb",
-      "type": "string"
-    },
-    "firewallRuleName": {
-      "defaultValue": "firewallRule1",
-      "type": "string"
     }
   },
   "variables": {
+    "serverName": "[parameters('serverName')]",
+    "sqlDbImportStorageKeyType": "SharedAccessKey",
+    "sqlDbImportStorageKey": "?",
+    "sqlDbImportStorageUri": "http://sqldbbacpacs.blob.core.windows.net/bacpacs/AdventureWorksLT.bacpac",
+    "sqlDbImportAdministratorLogin": "[parameters('adminLogin')]",
+    "sqlDbImportAdministratorLoginPassword": "[parameters('adminLoginPassword')]"
   },
-
   "resources": [
     {
-      "apiVersion": "2014-04-01-preview",
-      "name": "[parameters('serverName')]",
-      "location": "[parameters('serverLocation')]",
+      "name": "[variables('serverName')]",
       "type": "Microsoft.Sql/servers",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2014-04-01-preview",
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "[variables('serverName')]"
+      },
       "properties": {
-        "administratorLogin": "[parameters('administratorLogin')]",
-        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
-        "version": "[parameters('version')]"
+        "administratorLogin": "[parameters('adminLogin')]",
+        "administratorLoginPassword": "[parameters('adminLoginPassword')]"
       },
       "resources": [
         {
+          "name": "AllowAllWindowsAzureIps",
+          "type": "firewallrules",
+          "location": "[resourceGroup().location]",
           "apiVersion": "2014-04-01-preview",
           "dependsOn": [
-            "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+            "[concat('Microsoft.Sql/servers/', variables('serverName'))]"
           ],
-          "location": "[parameters('serverlocation')]",
-          "name": "[parameters('firewallRuleName')]",
-          "type": "firewallrules",
           "properties": {
             "startIpAddress": "0.0.0.0",
-            "endIpAddress": "255.255.255.255"
+            "endIpAddress": "0.0.0.0"
           }
-        }
-      ],
-	  "resources": [
-		  {  
+        },
+        {
+          "name": "[parameters('dbName')]",
+          "type": "databases",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[variables('serverName')]"
+          ],
+          "tags": {
+            "displayName": "[parameters('dbName')]"
+          },
+          "properties": {
+            "edition": "[parameters('dbEdition')]",
+            "maxSizeBytes": "1073741824",
+            "requestedServiceObjectiveName": "[parameters('dbRequestedServiceObjectiveName')]"
+          },
+          "resources": [
+            {
               "name": "Import",
               "type": "extensions",
               "apiVersion": "2014-04-01-preview",
-        "dependsOn": [
-          "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
-        ],
-        "properties": {
-          "databaseName": "TestDb",
-          "edition": "Standard",
-          "serviceObjectiveName": "S0",
-          "maxSizeBytes": "2147483648",
-          "storageKeyType": "StorageAccessKey",
-          "storageKey": "8a/socfMldcfLe2AAPCqNniluY5IB2nQocIEwsvbGTCqSVOfSnL+gknYi7lYbh7VY9tTdZhUPkSqiHP2Tv7cFg==",
-          "storageUri": "http://sqldbbacpacs.blob.core.windows.net/bacpacs/AdventureWorksLT.bacpac",
-          "administratorLogin": "sstein",
-          "administratorLoginPassword": "azureDB123",
-          "authenticationType": "SQL",
-          "operationMode": "Import"
+              "dependsOn": [
+                "[parameters('dbName')]"
+              ],
+              "tags": {
+                "displayName": "sqlDbImport"
+              },
+              "properties": {
+                "storageKeyType": "[variables('sqlDbImportStorageKeyType')]",
+                "storageKey": "[variables('sqlDbImportStorageKey')]",
+                "storageUri": "[variables('sqlDbImportStorageUri')]",
+                "administratorLogin": "[parameters('adminLogin')]",
+                "administratorLoginPassword": "[parameters('adminLoginPassword')]",
+                "operationMode": "Import"
+              }
+            }
+          ]
         }
-	}
-	  ]
+      ]
     }
   ],
   "outputs": {
