@@ -1,69 +1,77 @@
 ﻿{
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "adminLogin": {
-            "type": "string",
-            "minLength": 1
-        },
-        "adminLoginPassword": {
-            "type": "securestring"
-        },
-        "dbName": {
-            "type": "string",
-            "minLength": 1
-        },
-        "dbCollation": {
-            "type": "string",
-            "minLength": 1,
-            "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
-        },
-        "dbEdition": {
-            "type": "string",
-            "defaultValue": "Basic",
-            "allowedValues": [
-                "Basic",
-                "Standard",
-                "Premium"
-            ]
-        },
-        "dbRequestedServiceObjectiveName": {
-            "type": "string",
-            "defaultValue": "Basic",
-            "allowedValues": [
-                "Basic",
-                "S0",
-                "S1",
-                "S2",
-                "P1",
-                "P2",
-                "P3"
-            ],
-            "metadata": {
-                "description": "Describes the performance level for Edition"
-            }
-        },
-        "sqlDbImportStorageKeyType": {
-            "type": "string",
-            "minLength": 1
-        },
-        "sqlDbImportStorageKey": {
-            "type": "securestring"
-        },
-        "sqlDbImportStorageUri": {
-            "type": "string",
-            "minLength": 1
-        },
-        "sqlDbImportAdministratorLogin": {
-            "type": "string",
-            "minLength": 1
-        },
-        "sqlDbImportAdministratorLoginPassword": {
-            "type": "securestring"
-        }
+  "parameters": {
+    "adminLogin": {
+      "type": "string",
+      "minLength": 1
     },
+    "adminLoginPassword": {
+      "type": "securestring"
+    },
+    "dbName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "serverName": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "ssteinsrv021171645"
+    },
+    "dbCollation": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "dbEdition": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "Standard",
+        "Premium"
+      ]
+    },
+    "dbRequestedServiceObjectiveName": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "S0",
+        "S1",
+        "S2",
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "metadata": {
+        "description": "Describes the performance level for Edition"
+      }
+    },
+    "sqlDbImportStorageKeyType": {
+      "type": "string",
+      "defaultValue": "StorageAccessKey",
+      "minLength": 1
+    },
+    "sqlDbImportStorageKey": {
+      "type": "securestring",
+      "defaultValue": "?"
+    },
+    "sqlDbImportStorageUri": {
+      "type": "string",
+      "defaultValue": "http://sqldbbacpacs.blob.core.windows.net/bacpacs/AdventureWorksLT.bacpac",
+      "minLength": 1
+    },
+    "sqlDbImportAdministratorLogin": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sqlDbImportAdministratorLoginPassword": {
+      "type": "securestring"
+    }
+  },
     "variables": {
-        "serverName": "[concat('sstein0215171606', uniqueString(resourceGroup().id))]"
+        "serverName": "[parameters('serverName')]"
     },
     "resources": [
         {
