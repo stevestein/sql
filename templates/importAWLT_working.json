@@ -59,9 +59,6 @@
       "metadata": {
         "description": "The performance level for the selected Edition"
       }
-    },
-    "sqlDbImportAdministratorLoginPassword": {
-      "type": "securestring"
     }
   },
   "variables": {
