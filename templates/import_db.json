@@ -142,6 +142,10 @@
     "Fully qualified server name": {
       "type": "string",
       "value": "[concat(parameters('serverName'), '.database.windows.net')]"
+    },
+    "ADO.NET connection string": {
+      "type": "string",
+      "value": "[concat('Server=tcp:' ,parameters('serverName'), '.database.windows.net,1433;Initial Catalog=', parameters('dbName'), ';Persist Security Info=False;User ID={login};Password={password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;')]"
     }
   }
 }
