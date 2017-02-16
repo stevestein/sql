@@ -2,18 +2,26 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "serverName": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of the SQL server to import the database into."
+      }
+    },
     "adminLogin": {
       "type": "string",
       "minLength": 1,
       "metadata": {
-        "description": "The admin login for the SQL server."
+        "description": "Administrator login for the SQL server to import the database into."
       }
     },
     "adminLoginPassword": {
       "type": "securestring",
       "minLength": 1,
       "metadata": {
-        "description": "The admin password for the SQL server"
+        "description": "Administrator password for the SQL server to import the database into."
       }
     },
     "dbName": {
@@ -21,15 +29,7 @@
       "minLength": 1,
       "defaultValue": "AdventureWorksLT",
       "metadata": {
-        "description": "The name of the database."
-      }
-    },
-    "serverName": {
-      "type": "string",
-      "minLength": 1,
-      "defaultValue": "ssteinsrv021171645",
-      "metadata": {
-        "description": "The name of the server."
+        "description": "Name for the newly imported database."
       }
     },
     "dbEdition": {
@@ -139,5 +139,9 @@
     }
   ],
   "outputs": {
+    "Fully qualified server name": {
+      "type": "string",
+      "value": "[concat(parameters('serverName'), '.database.windows.net')]"
+    }
   }
 }
