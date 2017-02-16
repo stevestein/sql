@@ -50,7 +50,7 @@
     },
     "sqlDbImportStorageKeyType": {
       "type": "string",
-      "defaultValue": "StorageAccessKey",
+      "defaultValue": "SharedAccessKey",
       "minLength": 1
     },
     "sqlDbImportStorageKey": {
