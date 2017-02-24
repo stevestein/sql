@@ -30,7 +30,10 @@
     "customerCatalogEdition": "Standard",
     "webAppSku": "Standard",
     "tenantServer": "[concat(variables('tenantservername'),'-', variables('lowerCaseUser'))]",
-    "databaseStorageUri": "https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-bacpacs/",
+    "tenantContosoConcertHallStorageUri": "[concat('https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-bacpacs/',variables('tenantContosoConcertHall'),'.bacpac')]",
+    "tenantFabrikamJazzClubStorageUri": "[concat('https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-bacpacs/',variables('tenantFabrikamJazzClub'),'.bacpac')]",
+    "tenantDogwoodDojoStorageUri": "[concat('https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-bacpacs/',variables('tenantDogwoodDojo'),'.bacpac')]",
+    "catalogDatabaseStorageUri": "[concat('https://wtpdeploystorageaccount.blob.core.windows.net/wingtip-bacpacs/','wingtipcatalogdb.bacpac')]",
     "catalogServer": "[concat(variables('catalogServerName'),'-', variables('lowerCaseUser'))]",
     "wtpOperationsTrafficManagerUniqueDnsName": "[concat('operations','.wtp','.',variables('lowerCaseUser'))]",
     "wtpOperations": "[concat('operationswtp-',variables('lowerCaseUser'))]",
@@ -125,7 +128,7 @@
           "properties": {
             "storageKeyType": "SharedAccessKey",
             "storageKey": "?",
-            "storageUri": "[concat(variables('databaseStorageUri'),variables('tenantContosoConcertHall'),'.bacpac')]",
+            "storageUri": "[variables('tenantContosoConcertHallStorageUri')]",
             "administratorLogin": "[concat(variables('administratorLogin'),'@',variables('tenantServer'))]",
             "administratorLoginPassword": "[variables('administratorLoginPassword')]",
             "operationMode": "Import"
@@ -157,7 +160,7 @@
           "properties": {
             "storageKeyType": "SharedAccessKey",
             "storageKey": "?",
-            "storageUri": "[concat(variables('databaseStorageUri'),variables('tenantFabrikamJazzClub'),'.bacpac')]",
+            "storageUri": "[variables('tenantFabrikamJazzClubStorageUri')]",
             "administratorLogin": "[concat(variables('administratorLogin'),'@',variables('tenantServer'))]",
             "administratorLoginPassword": "[variables('administratorLoginPassword')]",
             "operationMode": "Import"
@@ -189,7 +192,7 @@
           "properties": {
             "storageKeyType": "SharedAccessKey",
             "storageKey": "?",
-            "storageUri": "[concat(variables('databaseStorageUri'),variables('tenantDogwoodDojo'),'.bacpac')]",
+            "storageUri": "[variables('tenantDogwoodDojoStorageUri')]",
             "administratorLogin": "[concat(variables('administratorLogin'),'@',variables('tenantServer'))]",
             "administratorLoginPassword": "[variables('administratorLoginPassword')]",
             "operationMode": "Import"
@@ -259,7 +262,7 @@
           "properties": {
             "storageKeyType": "SharedAccessKey",
             "storageKey": "?",
-            "storageUri": "[concat(variables('databaseStorageUri'),'wingtipcatalogdb.bacpac' )]",
+            "storageUri": "[variables('catalogDatabaseStorageUri')]",
             "administratorLogin": "[concat(variables('administratorLogin'),'@',variables('catalogServer'))]",
             "administratorLoginPassword": "[variables('administratorLoginPassword')]",
             "operationMode": "Import"
